@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saverino Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Saverino Music Player - Test Page</h1>
+    
+    <div class="test-section">
+        <h2>1. API Connection Test</h2>
+        <button onclick="testAPI()">Test Search API</button>
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. UI Elements Test</h2>
+        <button onclick="checkUIElements()">Check UI Elements</button>
+        <div id="ui-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Features Summary</h2>
+        <div class="result">
+            <h3>✨ New UI Features:</h3>
+            <ul>
+                <li>✅ Glassmorphism design with blur effects</li>
+                <li>✅ Animated gradient background with floating orbs</li>
+                <li>✅ Modern color scheme (purple, pink, green)</li>
+                <li>✅ Smooth animations and transitions</li>
+                <li>✅ Responsive grid layout</li>
+            </ul>
+            
+            <h3>🎵 Music Features:</h3>
+            <ul>
+                <li>✅ Search songs by name, artist, or album</li>
+                <li>✅ Quality selection (128-320 kbps)</li>
+                <li>✅ Mini player with controls</li>
+                <li>✅ Fullscreen player with vinyl animation</li>
+                <li>✅ Download manager with status tracking</li>
+                <li>✅ Quick tag buttons for easy search</li>
+            </ul>
+            
+            <h3>🚀 Improvements:</h3>
+            <ul>
+                <li>✅ Refactored JavaScript code</li>
+                <li>✅ Better error handling</li>
+                <li>✅ Improved performance</li>
+                <li>✅ Enhanced user experience</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = 'Testing API connection...';
+            
+            try {
+                const response = await fetch('https://jiosaavn-api-privatecvc2.vercel.app/search/songs?query=test&limit=1');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `✅ API Connection Successful!<br>
+                    Status: ${response.status}<br>
+                    Response: ${JSON.stringify(data).substring(0, 100)}...`;
+                } else {
+                    resultDiv.innerHTML = `❌ API Error: ${response.status}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Connection Error: ${error.message}`;
+            }
+        }
+        
+        function checkUIElements() {
+            const resultDiv = document.getElementById('ui-result');
+            const elements = [
+                'search-input',
+                'search-btn',
+                'results-grid',
+                'mini-player',
+                'fullscreen-player',
+                'download-popup',
+                'audio-player'
+            ];
+            
+            let results = '<h4>UI Elements Check:</h4>';
+            elements.forEach(id => {
+                const exists = window.opener && window.opener.document.getElementById(id);
+                results += `${exists ? '✅' : '❌'} ${id}<br>`;
+            });
+            
+            resultDiv.innerHTML = results + '<br>Note: Open this test page from the main app for full element detection.';
+        }
+    </script>
+</body>
+</html>

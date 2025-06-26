@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saverino - Modern Music Player</title>
+  <meta name="description" content="Saverino - A modern, ad-free music player with high-quality downloads">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a1a1a" />
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="animated-bg"></div>
+
+  <!-- Dark Mode Toggle -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- User Menu -->
+  <div id="user-menu" class="user-menu">
+    <button id="login-btn" class="login-btn">Login</button>
+    <div id="user-info" class="user-info" style="display:none;">
+      <img id="user-avatar" class="user-avatar" src="https://www.gravatar.com/avatar?d=mp&s=32" alt="avatar" />
+      <span id="user-name"></span>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="logo">Saverino</h1>
+      <p class="tagline">Your Modern Music Experience</p>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <div class="search-wrapper">
+        <!-- Quality Selector -->
+        <div class="quality-selector">
+          <button class="quality-btn" data-quality="0">128 kbps</button>
+          <button class="quality-btn" data-quality="1">160 kbps</button>
+          <button class="quality-btn" data-quality="2">192 kbps</button>
+          <button class="quality-btn active" data-quality="3">256 kbps</button>
+          <button class="quality-btn" data-quality="4">320 kbps</button>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box">
+          <input type="text" id="search-input" class="search-input" placeholder="Search for songs, artists, albums..." autocomplete="off">
+          <button id="search-btn" class="search-btn" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <!-- Quick Tags -->
+        <div class="quick-tags">
+          <button class="tag"><i class="fas fa-fire"></i> Top Hits</button>
+          <button class="tag"><i class="fas fa-music"></i> Pop</button>
+          <button class="tag"><i class="fas fa-guitar"></i> Rock</button>
+          <button class="tag"><i class="fas fa-headphones"></i> Hip Hop</button>
+          <button class="tag"><i class="fas fa-heart"></i> Romance</button>
+          <button class="tag"><i class="fas fa-bolt"></i> EDM</button>
+          <button class="tag"><i class="fas fa-microphone"></i> Bollywood</button>
+          <button class="tag"><i class="fas fa-globe"></i> International</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+      <div id="results-grid" class="results-grid">
+        <!-- Results will be populated here -->
+      </div>
+      
+      <!-- Load More Button -->
+      <div class="load-more-wrapper">
+        <button id="load-more-btn" class="load-more-btn" style="display: none;">
+          <i class="fas fa-plus-circle"></i> Load More
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Artist Page -->
+  <section id="artist-page" class="artist-page" style="display:none;">
+    <button id="artist-back-btn" class="artist-back-btn" aria-label="Back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <div class="artist-header">
+      <img id="artist-cover" class="artist-cover" src="" alt="Artist cover" />
+      <h2 id="artist-name" class="artist-name"></h2>
+    </div>
+    <div id="artist-results-grid" class="results-grid"></div>
+  </section>
+
+  <!-- Album Page -->
+  <section id="album-page" class="album-page" style="display:none;">
+    <button id="album-back-btn" class="album-back-btn" aria-label="Back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <div class="album-header">
+      <img id="album-cover" class="album-cover" src="" alt="Album cover" />
+      <h2 id="album-name" class="album-name"></h2>
+      <button id="album-play-all" class="album-play-all-btn" aria-label="Play Album">
+        <i class="fas fa-play"></i> Play Album
+      </button>
+    </div>
+    <div id="album-results-grid" class="results-grid"></div>
+  </section>
+
+  <!-- Mini Player -->
+  <div id="mini-player" class="mini-player">
+    <img id="mini-player-image" class="mini-player-image" src="" alt="Album cover">
+    <div class="mini-player-info">
+      <div id="mini-player-title" class="mini-player-title">No song playing</div>
+      <div id="mini-player-artist" class="mini-player-artist">Select a song to play</div>
+    </div>
+    
+    <div class="progress-wrapper">
+      <div id="mini-progress-bar" class="progress-bar">
+        <div id="mini-progress-fill" class="progress"></div>
+      </div>
+      <div class="time-display">
+        <span id="mini-current-time">0:00</span>
+        <span id="mini-total-time">0:00</span>
+      </div>
+    </div>
+    
+    <div class="mini-player-controls">
+      <button id="mini-prev-btn" class="mini-control-btn" aria-label="Previous">
+        <i class="fas fa-backward"></i>
+      </button>
+      <button id="mini-play-btn" class="mini-control-btn mini-play-btn" aria-label="Play/Pause">
+        <i class="fas fa-play"></i>
+      </button>
+      <button id="mini-next-btn" class="mini-control-btn" aria-label="Next">
+        <i class="fas fa-forward"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fullscreen Player -->
+  <div id="fullscreen-player" class="fullscreen-player">
+    <button id="close-fullscreen" class="close-fullscreen" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="fullscreen-content">
+      <div class="fullscreen-cover-wrapper">
+        <img id="fullscreen-cover" class="fullscreen-cover" src="" alt="Album cover">
+        <div class="vinyl-effect"></div>
+      </div>
+      
+      <div class="fullscreen-info-wrapper">
+        <h2 id="fullscreen-title" class="fullscreen-title">No song playing</h2>
+        <p id="fullscreen-artist" class="fullscreen-artist">Artist</p>
+        <p id="fullscreen-album" class="fullscreen-album">Album</p>
+        
+        <div class="fullscreen-progress">
+          <div id="fullscreen-progress-bar" class="fullscreen-progress-bar">
+            <div id="fullscreen-progress-fill" class="fullscreen-progress-fill"></div>
+          </div>
+          <div class="fullscreen-time">
+            <span id="fullscreen-current-time">0:00</span>
+            <span id="fullscreen-total-time">0:00</span>
+          </div>
+        </div>
+        
+        <div class="fullscreen-controls">
+          <button id="fullscreen-prev-btn" class="fullscreen-control-btn" aria-label="Previous">
+            <i class="fas fa-backward"></i>
+          </button>
+          <button id="fullscreen-play-btn" class="fullscreen-control-btn fullscreen-play-btn" aria-label="Play/Pause">
+            <i class="fas fa-play"></i>
+          </button>
+          <button id="fullscreen-next-btn" class="fullscreen-control-btn" aria-label="Next">
+            <i class="fas fa-forward"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Queue Manager -->
+  <div class="queue-manager">
+    <button id="queue-fab" class="queue-fab" aria-label="Queue">
+      <i class="fas fa-list"></i>
+    </button>
+  </div>
+
+  <!-- Queue Popup -->
+  <div id="queue-popup" class="queue-popup">
+    <div class="queue-content">
+      <div class="queue-header">
+        <h3>Up Next</h3>
+        <button id="close-queue" class="close-queue" aria-label="Close"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="queue-list" class="queue-list"></div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="auth-modal">
+    <div class="auth-content">
+      <button id="close-auth" class="close-auth" aria-label="Close"><i class="fas fa-times"></i></button>
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab active">Login</button>
+        <button id="tab-signup" class="auth-tab">Sign Up</button>
+      </div>
+      <div id="login-form" class="auth-form active">
+        <input type="text" id="login-username" placeholder="Username" />
+        <input type="password" id="login-password" placeholder="Password" />
+        <button id="login-submit" class="auth-submit">Login</button>
+      </div>
+      <div id="signup-form" class="auth-form">
+        <input type="text" id="signup-username" placeholder="Username" />
+        <input type="password" id="signup-password" placeholder="Password" />
+        <button id="signup-submit" class="auth-submit">Sign Up</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Page -->
+  <section id="profile-page" class="profile-page" style="display:none;">
+    <button id="profile-back-btn" class="profile-back-btn" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <div class="profile-header">
+      <img id="profile-avatar" class="profile-avatar editable" src="" alt="avatar" title="Click to change avatar" />
+      <h2 id="profile-username" class="editable" title="Click to change username"></h2>
+    </div>
+    <div class="profile-section">
+      <h3>My Playlists</h3>
+      <button id="create-playlist-btn" class="create-playlist-btn">+ New Playlist</button>
+      <div id="playlist-list" class="playlist-list"></div>
+    </div>
+  </section>
+
+  <!-- Playlist Page -->
+  <section id="playlist-page" class="playlist-page" style="display:none;">
+    <button id="playlist-back-btn" class="playlist-back-btn" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <div class="playlist-header">
+      <h2 id="playlist-title"></h2>
+      <button id="playlist-play-btn" class="album-play-all-btn"><i class="fas fa-play"></i> Play</button>
+    </div>
+    <div id="playlist-track-list" class="track-list"></div>
+  </section>
+
+  <!-- Audio Element -->
+  <audio id="audio-player" style="display: none;"></audio>
+
+  <!-- Scripts -->
+  <script src="app.js" defer></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.log('Service Worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+
+  <!-- Playlist Picker -->
+  <div id="playlist-picker" class="playlist-picker">
+    <div id="picker-list" class="picker-list"></div>
+  </div>
+</body>
+</html>
