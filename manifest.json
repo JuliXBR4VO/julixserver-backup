@@ -1,7 +1,7 @@
 {
-  "name": "Saverino",
-  "short_name": "Saverino",
-  "description": "Saverino - A modern, ad-free music player with high-quality downloads",
+  "name": "julixserver",
+  "short_name": "julixserver",
+  "description": "julixserver - A modern, ad-free music player with high-quality downloads",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1a1a1a",
