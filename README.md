@@ -1,4 +1,4 @@
-# JULIXSERVER 🤖🎶 (brain-rot edition)
+# JULIXSERVER 🤖🎶 
 
 > **WARNING:** Reading this file may lower your IQ but raise your vibe. Proceed at your own peril.  
 > TL;DR – double-click `index.html`, ascend to sigma.
